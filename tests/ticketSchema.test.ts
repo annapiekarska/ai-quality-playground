@@ -8,18 +8,20 @@ const validTicket = {
   needsHumanReview: true,
 };
 
-const invalidTicket = {
-  category: "payment",
-  urgency: "high",
-  summary: "Customer was charged twice.",
-  needsHumanReview: true,
-};
-
 describe("TicketSchema", () => {
   test("valid ticket passes schema validation", () => {
     expect(() => TicketSchema.parse(validTicket)).not.toThrow();
   });
   test("invalid category fails schema validation", () => {
-    expect(() => TicketSchema.parse(invalidTicket)).toThrow();
+    const invalidTicketCategory = { ...validTicket, category: "payment" };
+    expect(() => TicketSchema.parse(invalidTicketCategory)).toThrow();
+  });
+  test("summary containing only whitespace fails schema validation", () => {
+    const ticketWithWhitespaceSummary = { ...validTicket, summary: "     " };
+    expect(() => TicketSchema.parse(ticketWithWhitespaceSummary)).toThrow();
+  });
+  test("invalid urgency fails schema validation", () => {
+    const invalidTicketUrgency = { ...validTicket, urgency: "urgent" };
+    expect(() => TicketSchema.parse(invalidTicketUrgency)).toThrow();
   });
 });
