@@ -13,5 +13,7 @@ describe("runTicketDatasetEvaluation", () => {
     expect(evaluationResult.total).toBe(3);
     expect(evaluationResult.passed).toBe(1);
     expect(evaluationResult.failed).toBe(2);
+    expect(evaluationResult.schemaFailures).toBe(1);
+    expect(evaluationResult.businessRuleFailures).toBe(1);
   });
 });
