@@ -1,12 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { TicketBusinessRules } from "../src/ticketBusinessRules";
-
-const validTicket = {
-  category: "billing",
-  urgency: "high",
-  summary: "Customer was charged twice.",
-  needsHumanReview: true,
-};
+import { validTicket } from "../test-data/tickets";
 
 describe("TicketBusinessRules", () => {
   test("high urgency without human review fails business validation", () => {
