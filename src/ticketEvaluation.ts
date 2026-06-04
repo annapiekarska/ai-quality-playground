@@ -1,7 +1,7 @@
 import { TicketSchema } from "./ticketSchema";
 import { TicketBusinessRules } from "./ticketBusinessRules";
 
-export const evaluateTicket = (ticket: any) => {
+export const evaluateTicket = (ticket: unknown) => {
   const schemaValidationResult = TicketSchema.safeParse(ticket);
 
   if (!schemaValidationResult.success) {
@@ -11,8 +11,9 @@ export const evaluateTicket = (ticket: any) => {
     };
   }
 
-  const businessValidationResult = TicketBusinessRules.validate(ticket);
-
+  const businessValidationResult = TicketBusinessRules.validate(
+    schemaValidationResult.data,
+  );
   if (!businessValidationResult) {
     return {
       valid: false,

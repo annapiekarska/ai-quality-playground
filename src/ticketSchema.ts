@@ -8,3 +8,4 @@ export const TicketSchema = z.object({
 });
 
 export const TicketsSchema = z.array(TicketSchema);
+export type Ticket = z.infer<typeof TicketSchema>;

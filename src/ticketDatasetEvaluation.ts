@@ -1,6 +1,6 @@
 import { evaluateTicket } from "./ticketEvaluation";
 
-export const runTicketDatasetEvaluation = (tickets: any[]) => {
+export const runTicketDatasetEvaluation = (tickets: unknown[]) => {
   const results = tickets.map(evaluateTicket);
   return {
     total: tickets.length,

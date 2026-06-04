@@ -1,5 +1,7 @@
-const validateTicketBusinessRules = (ticket: any) => {
-  if (ticket.urgency === "high" && ticket.needsHumanReview === false) {
+import { Ticket } from "./ticketSchema";
+
+const validateTicketBusinessRules = (ticket: Ticket) => {
+  if (ticket.urgency === "high" && !ticket.needsHumanReview) {
     return false;
   }
   return true;
