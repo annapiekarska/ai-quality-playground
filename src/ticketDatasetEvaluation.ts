@@ -1,6 +1,17 @@
 import { evaluateTicket } from "./ticketEvaluation";
+import type { EvaluationResult } from "./ticketEvaluation";
 
-export const runTicketDatasetEvaluation = (tickets: unknown[]) => {
+export type DatasetEvaluationResult = {
+  total: number;
+  passed: number;
+  failed: number;
+  schemaFailures: number;
+  businessRuleFailures: number;
+  results: EvaluationResult[];
+};
+export const runTicketDatasetEvaluation = (
+  tickets: unknown[],
+): DatasetEvaluationResult => {
   const results = tickets.map(evaluateTicket);
   return {
     total: tickets.length,

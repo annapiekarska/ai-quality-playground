@@ -1,7 +1,12 @@
 import { TicketSchema } from "./ticketSchema";
 import { TicketBusinessRules } from "./ticketBusinessRules";
 
-export const evaluateTicket = (ticket: unknown) => {
+export type EvaluationResult = {
+  valid: boolean;
+  errors: string[];
+};
+
+export const evaluateTicket = (ticket: unknown): EvaluationResult => {
   const schemaValidationResult = TicketSchema.safeParse(ticket);
 
   if (!schemaValidationResult.success) {
