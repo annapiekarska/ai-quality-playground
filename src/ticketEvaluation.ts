@@ -3,7 +3,7 @@ import { TicketBusinessRules } from "./ticketBusinessRules";
 import {
   SCHEMA_VALIDATION_FAILED,
   BUSINESS_RULE_VALIDATION_FAILED,
-} from "./evaluationErrors";
+} from "./ticketEvaluationErrors";
 
 export type EvaluationResult = {
   valid: boolean;

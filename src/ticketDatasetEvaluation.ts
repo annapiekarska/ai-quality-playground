@@ -3,7 +3,7 @@ import type { EvaluationResult } from "./ticketEvaluation";
 import {
   SCHEMA_VALIDATION_FAILED,
   BUSINESS_RULE_VALIDATION_FAILED,
-} from "./evaluationErrors";
+} from "./ticketEvaluationErrors";
 
 export type DatasetEvaluationResult = {
   total: number;

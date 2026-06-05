@@ -8,7 +8,7 @@ import {
 import {
   SCHEMA_VALIDATION_FAILED,
   BUSINESS_RULE_VALIDATION_FAILED,
-} from "../src/evaluationErrors";
+} from "../src/ticketEvaluationErrors";
 
 describe("evaluateTicket", () => {
   test("invalid schema returns schema validation error", () => {
