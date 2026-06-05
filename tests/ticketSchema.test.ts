@@ -1,10 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { TicketSchema } from "../src/ticketSchema";
-import {
-  validTicket,
-  invalidTicket,
-  businessRuleViolationTicket,
-} from "../test-data/tickets";
+import { validTicket } from "../test-data/tickets";
 
 describe("TicketSchema", () => {
   test("valid ticket passes schema validation", () => {

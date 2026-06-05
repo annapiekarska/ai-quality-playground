@@ -1,5 +1,9 @@
 import { TicketSchema } from "./ticketSchema";
 import { TicketBusinessRules } from "./ticketBusinessRules";
+import {
+  SCHEMA_VALIDATION_FAILED,
+  BUSINESS_RULE_VALIDATION_FAILED,
+} from "./evaluationErrors";
 
 export type EvaluationResult = {
   valid: boolean;
@@ -12,7 +16,7 @@ export const evaluateTicket = (ticket: unknown): EvaluationResult => {
   if (!schemaValidationResult.success) {
     return {
       valid: false,
-      errors: ["schema-validation-failed"],
+      errors: [SCHEMA_VALIDATION_FAILED],
     };
   }
 
@@ -22,7 +26,7 @@ export const evaluateTicket = (ticket: unknown): EvaluationResult => {
   if (!businessValidationResult) {
     return {
       valid: false,
-      errors: ["business-rule-validation-failed"],
+      errors: [BUSINESS_RULE_VALIDATION_FAILED],
     };
   }
 

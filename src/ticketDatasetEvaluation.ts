@@ -1,5 +1,9 @@
 import { evaluateTicket } from "./ticketEvaluation";
 import type { EvaluationResult } from "./ticketEvaluation";
+import {
+  SCHEMA_VALIDATION_FAILED,
+  BUSINESS_RULE_VALIDATION_FAILED,
+} from "./evaluationErrors";
 
 export type DatasetEvaluationResult = {
   total: number;
@@ -18,11 +22,11 @@ export const runTicketDatasetEvaluation = (
     passed: results.filter((result) => result.valid).length,
     failed: results.filter((result) => !result.valid).length,
     schemaFailures: results.filter((result) =>
-      result.errors.includes("schema-validation-failed"),
+      result.errors.includes(SCHEMA_VALIDATION_FAILED),
     ).length,
 
     businessRuleFailures: results.filter((result) =>
-      result.errors.includes("business-rule-validation-failed"),
+      result.errors.includes(BUSINESS_RULE_VALIDATION_FAILED),
     ).length,
     results,
   };
