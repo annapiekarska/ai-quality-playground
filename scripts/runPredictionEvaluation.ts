@@ -16,7 +16,7 @@ console.log("Correct predictions:", report.correct);
 console.log("Incorrect predictions:", report.incorrect);
 console.log("Accuracy:", (report.accuracy * 100).toFixed(2) + "%");
 console.log("");
-console.log("Per-label metrics:");
+console.log("Per-category metrics:");
 
 for (const category of categories) {
   console.log("Category:", category);

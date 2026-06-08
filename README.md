@@ -190,29 +190,37 @@ Example output:
 
 ```text
 AI Prediction Evaluation Report
-Dataset size: 3
-Correct predictions: 2
-Incorrect predictions: 1
-Accuracy: 66.67%
+Dataset size: 10
+Correct predictions: 5
+Incorrect predictions: 5
+Accuracy: 50.00%
 
-Per-label metrics:
+Per-category metrics:
 Category: billing
-Precision: 100.00%
+Precision: 50.00%
 Recall: 50.00%
-F1 Score: 66.67%
+F1 Score: 50.00%
 
 Category: technical
 Precision: 50.00%
-Recall: 100.00%
-F1 Score: 66.67%
+Recall: 66.67%
+F1 Score: 57.14%
+
+Category: account
+Precision: 50.00%
+Recall: 33.33%
+F1 Score: 40.00%
 ```
 
 This report shows why accuracy alone is not enough.
 
-For example:
+Although the overall accuracy is 50%, the per-category metrics reveal different quality patterns:
 
-- `billing` has high precision but lower recall, which means the model is reliable when it predicts `billing`, but it misses some actual billing tickets.
-- `technical` has high recall but lower precision, which means the model finds technical tickets well, but sometimes predicts technical incorrectly.
+- `billing` has balanced but weak precision and recall, which means the model both overpredicts and misses billing tickets.
+- `technical` has higher recall than precision, which means the model finds more actual technical tickets, but still produces false positives.
+- `account` has the weakest recall, which means the model misses most actual account-related tickets.
+
+This kind of breakdown helps identify which categories need improvement instead of relying only on overall accuracy.
 
 ## Tech stack
 
