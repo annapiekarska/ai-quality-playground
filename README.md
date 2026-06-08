@@ -6,7 +6,7 @@ The project does not train a machine learning model. Instead, it focuses on the 
 
 ## Purpose
 
-This project was created to practice and demonstrate core AI Quality Engineering concepts:
+This project was built as a portfolio project to demonstrate practical Quality Engineering skills applied to AI-style outputs:
 
 - Structured output validation
 - Business rule validation
@@ -17,7 +17,9 @@ This project was created to practice and demonstrate core AI Quality Engineering
 - Automated testing
 - Human-readable quality reporting
 
-The project simulates a common AI Quality workflow where an AI system classifies support tickets into categories, and the quality layer evaluates whether those predictions are reliable.
+It shows how a QA Lead / Quality Engineer can design a quality layer around model predictions by validating structured data, comparing predicted outputs with expected results, calculating evaluation metrics, and producing a readable quality report.
+
+The project focuses on AI Quality Engineering rather than machine learning model development. Its purpose is to demonstrate how traditional QA practices such as validation, test data design, metrics, edge case testing, and reporting can be applied to AI evaluation workflows.
 
 ## What the project evaluates
 
@@ -374,7 +376,7 @@ Planned next steps:
 
 ## Career relevance
 
-This project is aligned with roles such as:
+This project is designed as a portfolio project for roles related to:
 
 - QA Lead
 - Quality Engineering Manager
@@ -382,6 +384,15 @@ This project is aligned with roles such as:
 - AI Quality Lead
 - Quality Governance Lead
 
-It focuses on the quality layer around AI systems rather than model training.
+It demonstrates practical skills relevant to AI Quality and Quality Engineering, including:
 
-The goal is to show how QA and Quality Engineering practices can be applied to AI outputs through validation, metrics, testing, and reporting.
+- Designing evaluation logic for AI-style predictions
+- Validating structured outputs
+- Building dataset-level quality checks
+- Calculating classification metrics
+- Understanding false positives and false negatives
+- Creating human-readable quality reports
+- Writing automated tests for evaluation logic
+- Thinking beyond accuracy when assessing model output quality
+
+The project intentionally focuses on the quality and governance layer around AI systems, rather than model training. This reflects the type of work expected in AI Quality, Quality Strategy, and AI Governance roles.
