@@ -366,14 +366,14 @@ Completed:
 - Human-readable prediction report
 - Automated tests
 - `.gitignore` and repository cleanup
+- Expand the prediction dataset
+- Refactor report generation into a dedicated report module
+- Add tests for report formatting
 
 ## Roadmap
 
 Planned next steps:
 
-- Expand the prediction dataset
-- Refactor report generation into a dedicated report module
-- Add tests for report formatting
 - Add a confusion matrix
 - Add macro and weighted averages
 - Add quality gates based on metric thresholds
