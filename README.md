@@ -8,14 +8,14 @@ The project does not train a machine learning model. Instead, it focuses on the 
 
 This project was created to practice and demonstrate core AI Quality Engineering concepts:
 
-- structured output validation
-- business rule validation
-- dataset-level evaluation
-- prediction evaluation
-- accuracy, precision, recall, and F1 score
-- per-category quality analysis
-- automated testing
-- human-readable quality reporting
+- Structured output validation
+- Business rule validation
+- Dataset-level evaluation
+- Prediction evaluation
+- Accuracy, precision, recall, and F1 score
+- Per-category quality analysis
+- Automated testing
+- Human-readable quality reporting
 
 The project simulates a common AI Quality workflow where an AI system classifies support tickets into categories, and the quality layer evaluates whether those predictions are reliable.
 
@@ -23,22 +23,22 @@ The project simulates a common AI Quality workflow where an AI system classifies
 
 The project works with ticket-like objects containing fields such as:
 
-- category
-- urgency
-- summary
-- needsHumanReview
+- `category`
+- `urgency`
+- `summary`
+- `needsHumanReview`
 
 The current schema supports the following ticket categories:
 
-- billing
-- technical
-- account
+- `billing`
+- `technical`
+- `account`
 
 It also supports urgency levels:
 
-- low
-- medium
-- high
+- `low`
+- `medium`
+- `high`
 
 A business rule is included:
 
@@ -58,7 +58,9 @@ The project includes business validation beyond schema correctness.
 
 Example rule:
 
-txt If urgency is high, needsHumanReview must be true.
+```text
+If urgency is high, needsHumanReview must be true.
+```
 
 ### Ticket evaluation
 
@@ -66,7 +68,10 @@ A single ticket can be evaluated and marked as valid or invalid.
 
 The evaluation can return errors such as:
 
-txt schema-validation-failed business-rule-validation-failed
+```text
+schema-validation-failed
+business-rule-validation-failed
+```
 
 ### Dataset evaluation
 
@@ -74,12 +79,12 @@ A dataset of tickets can be evaluated as a group.
 
 The dataset evaluation returns:
 
-- total number of tickets
-- passed tickets
-- failed tickets
-- schema validation failures
-- business rule failures
-- individual evaluation results
+- Total number of tickets
+- Passed tickets
+- Failed tickets
+- Schema validation failures
+- Business rule failures
+- Individual evaluation results
 
 ### Prediction evaluation
 
@@ -87,7 +92,13 @@ The project supports AI-style prediction evaluation.
 
 A prediction contains:
 
-ts { ticket: Ticket; expectedCategory: Ticket["category"]; predictedCategory: Ticket["category"]; }
+```ts
+{
+  ticket: Ticket;
+  expectedCategory: Ticket["category"];
+  predictedCategory: Ticket["category"];
+}
+```
 
 This allows the project to compare the expected ticket category with the predicted category.
 
@@ -101,7 +112,9 @@ It answers the question:
 
 Formula:
 
-txt Accuracy = correct predictions / all predictions
+```text
+Accuracy = correct predictions / all predictions
+```
 
 Accuracy is useful, but it can be misleading when the dataset is imbalanced.
 
@@ -115,13 +128,17 @@ It answers the question:
 
 Formula:
 
-txt Precision = true positives / predicted positives
+```text
+Precision = true positives / predicted positives
+```
 
 Example:
 
-If the model predicted billing 4 times and only 2 of those predictions were actually billing, then precision for billing is:
+If the model predicted `billing` 4 times and only 2 of those predictions were actually `billing`, then precision for `billing` is:
 
-txt 2 / 4 = 50%
+```text
+2 / 4 = 50%
+```
 
 ### Recall
 
@@ -133,13 +150,17 @@ It answers the question:
 
 Formula:
 
-txt Recall = true positives / actual positives
+```text
+Recall = true positives / actual positives
+```
 
 Example:
 
-If there were 4 actual billing tickets and the model correctly found 2 of them, then recall for billing is:
+If there were 4 actual `billing` tickets and the model correctly found 2 of them, then recall for `billing` is:
 
-txt 2 / 4 = 50%
+```text
+2 / 4 = 50%
+```
 
 ### F1 Score
 
@@ -147,7 +168,9 @@ F1 Score combines precision and recall into one balanced metric.
 
 Formula:
 
-txt F1 = 2 _ (precision _ recall) / (precision + recall)
+```text
+F1 = 2 * (precision * recall) / (precision + recall)
+```
 
 F1 Score is useful when both false positives and false negatives matter.
 
@@ -157,18 +180,37 @@ The project includes a terminal report for prediction evaluation.
 
 Run:
 
-bash npx tsx scripts/runPredictionEvaluation.ts
+```bash
+npx tsx scripts/runPredictionEvaluation.ts
+```
 
 Example output:
 
-txt AI Prediction Evaluation Report Dataset size: 3 Correct predictions: 2 Incorrect predictions: 1 Accuracy: 66.67% Per-label metrics: Category: billing Precision: 100.00% Recall: 50.00% F1 Score: 66.67% Category: technical Precision: 50.00% Recall: 100.00% F1 Score: 66.67%
+```text
+AI Prediction Evaluation Report
+Dataset size: 3
+Correct predictions: 2
+Incorrect predictions: 1
+Accuracy: 66.67%
+
+Per-label metrics:
+Category: billing
+Precision: 100.00%
+Recall: 50.00%
+F1 Score: 66.67%
+
+Category: technical
+Precision: 50.00%
+Recall: 100.00%
+F1 Score: 66.67%
+```
 
 This report shows why accuracy alone is not enough.
 
 For example:
 
-- billing has high precision but lower recall, which means the model is reliable when it predicts billing, but it misses some actual billing tickets.
-- technical has high recall but lower precision, which means the model finds technical tickets well, but sometimes predicts technical incorrectly.
+- `billing` has high precision but lower recall, which means the model is reliable when it predicts `billing`, but it misses some actual billing tickets.
+- `technical` has high recall but lower precision, which means the model finds technical tickets well, but sometimes predicts technical incorrectly.
 
 ## Tech stack
 
@@ -180,31 +222,84 @@ For example:
 
 ## Project structure
 
-txt scripts/ runPredictionEvaluation.ts src/ ticketBusinessRules.ts ticketDatasetEvaluation.ts ticketEvaluation.ts ticketEvaluationErrors.ts ticketPrediction.ts ticketPredictionDatasetEvaluation.ts ticketPredictionEvaluation.ts ticketPredictionF1Score.ts ticketPredictionPrecision.ts ticketPredictionRecall.ts ticketSchema.ts test-data/ tickets.ts ticketPredictions.ts tests/ ticketBusinessRules.test.ts ticketDatasetEvaluation.test.ts ticketEvaluation.test.ts ticketPredictionDatasetEvaluation.test.ts ticketPredictionEvaluation.test.ts ticketPredictionF1Score.test.ts ticketPredictionPrecision.test.ts ticketPredictionRecall.test.ts ticketSchema.test.ts
+```text
+scripts/
+  runPredictionEvaluation.ts
+
+src/
+  ticketBusinessRules.ts
+  ticketDatasetEvaluation.ts
+  ticketEvaluation.ts
+  ticketEvaluationErrors.ts
+  ticketPrediction.ts
+  ticketPredictionDatasetEvaluation.ts
+  ticketPredictionEvaluation.ts
+  ticketPredictionF1Score.ts
+  ticketPredictionPrecision.ts
+  ticketPredictionRecall.ts
+  ticketSchema.ts
+
+test-data/
+  tickets.ts
+  ticketPredictions.ts
+
+tests/
+  ticketBusinessRules.test.ts
+  ticketDatasetEvaluation.test.ts
+  ticketEvaluation.test.ts
+  ticketPredictionDatasetEvaluation.test.ts
+  ticketPredictionEvaluation.test.ts
+  ticketPredictionF1Score.test.ts
+  ticketPredictionPrecision.test.ts
+  ticketPredictionRecall.test.ts
+  ticketSchema.test.ts
+```
 
 ## Installation
 
-bash npm install
+```bash
+npm install
+```
 
 ## Running tests
 
-bash npm test
+```bash
+npm test
+```
 
 The project uses Vitest for automated testing.
 
 You can also run tests in watch mode:
 
-bash npm run test:watch
+```bash
+npm run test:watch
+```
 
 ## Running the prediction report
 
-bash npx tsx scripts/runPredictionEvaluation.ts
+```bash
+npx tsx scripts/runPredictionEvaluation.ts
+```
 
 ## Example workflow
 
 The project follows this evaluation flow:
 
-txt Ticket dataset ↓ Schema validation ↓ Business rule validation ↓ Prediction comparison ↓ Dataset-level accuracy ↓ Per-category precision, recall, and F1 score ↓ Human-readable report
+```text
+Ticket dataset
+  ↓
+Schema validation
+  ↓
+Business rule validation
+  ↓
+Prediction comparison
+  ↓
+Dataset-level accuracy
+  ↓
+Per-category precision, recall, and F1 score
+  ↓
+Human-readable report
+```
 
 ## Why this project matters
 
@@ -214,15 +309,18 @@ A model can appear to perform well when measured only with accuracy, especially 
 
 For example:
 
-txt 95 tickets are billing 5 tickets are technical
+```text
+95 tickets are billing
+5 tickets are technical
+```
 
-If a model always predicts billing, it can still reach 95% accuracy while completely failing to identify technical tickets.
+If a model always predicts `billing`, it can still reach 95% accuracy while completely failing to identify technical tickets.
 
 That is why this project evaluates predictions using:
 
-- accuracy
-- precision
-- recall
+- Accuracy
+- Precision
+- Recall
 - F1 score
 
 This gives a clearer view of model quality per category.
@@ -232,47 +330,47 @@ This gives a clearer view of model quality per category.
 This project demonstrates practical understanding of:
 
 - AI output evaluation
-- structured output validation
-- classification metrics
-- dataset-based evaluation
-- false positives and false negatives
-- quality reporting
-- edge case handling
+- Structured output validation
+- Classification metrics
+- Dataset-based evaluation
+- False positives and false negatives
+- Quality reporting
+- Edge case handling
 - TypeScript typing
-- automated testing
-- separation of validation, evaluation, metrics, and reporting logic
+- Automated testing
+- Separation of validation, evaluation, metrics, and reporting logic
 
 ## Current status
 
 Completed:
 
-- ticket schema validation
-- business rule validation
-- ticket evaluation
-- ticket dataset evaluation
-- prediction evaluation
-- accuracy
-- precision
-- recall
+- Ticket schema validation
+- Business rule validation
+- Ticket evaluation
+- Ticket dataset evaluation
+- Prediction evaluation
+- Accuracy
+- Precision
+- Recall
 - F1 score
-- human-readable prediction report
-- automated tests
-- .gitignore and repository cleanup
+- Human-readable prediction report
+- Automated tests
+- `.gitignore` and repository cleanup
 
 ## Roadmap
 
 Planned next steps:
 
-- expand the prediction dataset
-- refactor report generation into a dedicated report module
-- add tests for report formatting
-- add a confusion matrix
-- add macro and weighted averages
-- add quality gates based on metric thresholds
-- add GitHub Actions for CI
-- explore Langfuse basics
-- explore Phoenix basics
-- connect the project to broader AI Quality and AI Governance concepts
+- Expand the prediction dataset
+- Refactor report generation into a dedicated report module
+- Add tests for report formatting
+- Add a confusion matrix
+- Add macro and weighted averages
+- Add quality gates based on metric thresholds
+- Add GitHub Actions for CI
+- Explore Langfuse basics
+- Explore Phoenix basics
+- Connect the project to broader AI Quality and AI Governance concepts
 
 ## Career relevance
 
