@@ -176,6 +176,20 @@ F1 = 2 * (precision * recall) / (precision + recall)
 
 F1 Score is useful when both false positives and false negatives matter.
 
+## Confusion matrix
+
+The project also includes a confusion matrix for prediction evaluation.
+
+The confusion matrix shows how expected categories were classified by the model.
+
+Example:
+
+```text
+billing -> billing: 2
+billing -> technical: 1
+billing -> account: 1
+```
+
 ## Human-readable report
 
 The project includes a terminal report for prediction evaluation.
@@ -210,6 +224,16 @@ Category: account
 Precision: 50.00%
 Recall: 33.33%
 F1 Score: 40.00%
+
+Confusion matrix:
+billing -> billing: 2
+billing -> technical: 1
+billing -> account: 1
+technical -> technical: 2
+technical -> billing: 1
+account -> account: 1
+account -> billing: 1
+account -> technical: 1
 ```
 
 This report shows why accuracy alone is not enough.
@@ -369,12 +393,12 @@ Completed:
 - Expand the prediction dataset
 - Refactor report generation into a dedicated report module
 - Add tests for report formatting
+- Add a confusion matrix
 
 ## Roadmap
 
 Planned next steps:
 
-- Add a confusion matrix
 - Add macro and weighted averages
 - Add quality gates based on metric thresholds
 - Add GitHub Actions for CI

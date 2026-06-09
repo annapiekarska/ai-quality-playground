@@ -17,5 +17,10 @@ describe("generatePredictionEvaluationReport", () => {
     expect(report).toContain("Precision: 50.00%");
     expect(report).toContain("Recall: 50.00%");
     expect(report).toContain("F1 Score: 50.00%");
+
+    expect(report).toContain("Confusion matrix:");
+    expect(report).toContain("billing -> billing: 2");
+    expect(report).toContain("billing -> technical: 1");
+    expect(report).toContain("account -> technical: 1");
   });
 });

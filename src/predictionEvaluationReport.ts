@@ -3,11 +3,13 @@ import { runTicketPredictionDatasetEvaluation } from "./ticketPredictionDatasetE
 import { Precision } from "./ticketPredictionPrecision";
 import { Recall } from "./ticketPredictionRecall";
 import { F1Score } from "./ticketPredictionF1Score";
+import { buildConfusionMatrix } from "./ticketPredictionConfusionMatrix";
 
 export const generatePredictionEvaluationReport = (
   predictions: TicketPrediction[],
 ): string => {
   const evaluation = runTicketPredictionDatasetEvaluation(predictions);
+  const confusionMatrix = buildConfusionMatrix(predictions);
 
   const categories = new Set<string>();
 
@@ -36,6 +38,18 @@ export const generatePredictionEvaluationReport = (
     lines.push(`Recall: ${(recallResult.recall * 100).toFixed(2)}%`);
     lines.push(`F1 Score: ${(f1ScoreResult.f1Score * 100).toFixed(2)}%`);
     lines.push("");
+  }
+
+  lines.push("Confusion matrix:");
+
+  for (const expectedCategory of Object.keys(confusionMatrix)) {
+    const predictedCategories = confusionMatrix[expectedCategory];
+
+    for (const predictedCategory of Object.keys(predictedCategories)) {
+      const count = predictedCategories[predictedCategory];
+
+      lines.push(`${expectedCategory} -> ${predictedCategory}: ${count}`);
+    }
   }
 
   return lines.join("\n");
