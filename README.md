@@ -1,206 +1,113 @@
 # AI Quality Playground
 
-AI Quality Playground is a TypeScript-based portfolio project focused on evaluating the quality of AI-style ticket classification outputs.
+AI Quality Playground is a TypeScript-based portfolio project focused on evaluating AI-style classification outputs from a Quality Engineering perspective.
 
-The project does not train a machine learning model. Instead, it focuses on the quality layer around model outputs: validating structured data, comparing predicted categories with expected categories, calculating evaluation metrics, and generating a human-readable report.
+The project does not train a model. Instead, it evaluates prediction quality using common classification metrics, generates a readable evaluation report, and applies a configurable quality gate that can block CI when quality thresholds are not met.
 
-## Purpose
+## Why this project exists
 
-This project was built as a portfolio project to demonstrate practical Quality Engineering skills applied to AI-style outputs:
+This project demonstrates how QA and Quality Engineering practices can be applied to AI-assisted or AI-driven systems.
 
-- Structured output validation
-- Business rule validation
-- Dataset-level evaluation
-- Prediction evaluation
-- Accuracy, precision, recall, and F1 score
-- Per-category quality analysis
-- Automated testing
-- Human-readable quality reporting
+It focuses on:
 
-It shows how a QA Lead / Quality Engineer can design a quality layer around model predictions by validating structured data, comparing predicted outputs with expected results, calculating evaluation metrics, and producing a readable quality report.
-
-The project focuses on AI Quality Engineering rather than machine learning model development. Its purpose is to demonstrate how traditional QA practices such as validation, test data design, metrics, edge case testing, and reporting can be applied to AI evaluation workflows.
-
-## What the project evaluates
-
-The project works with ticket-like objects containing fields such as:
-
-- `category`
-- `urgency`
-- `summary`
-- `needsHumanReview`
-
-The current schema supports the following ticket categories:
-
-- `billing`
-- `technical`
-- `account`
-
-It also supports urgency levels:
-
-- `low`
-- `medium`
-- `high`
-
-A business rule is included:
-
-> High urgency tickets must require human review.
+- evaluating prediction quality
+- validating classification outputs
+- reporting model performance
+- comparing per-category and aggregate metrics
+- applying quality gates
+- running automated checks in CI
 
 ## Current features
 
-### Schema validation
+- Ticket schema validation
+- Business rule validation
+- Single ticket evaluation
+- Dataset-level evaluation
+- AI prediction evaluation
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Macro average
+- Weighted average
+- Confusion matrix
+- Human-readable prediction evaluation report
+- Configurable prediction quality gate
+- GitHub Actions CI pipeline
 
-Ticket objects are validated using Zod.
-
-The schema checks whether a ticket has the expected structure and valid field values.
-
-### Business rule validation
-
-The project includes business validation beyond schema correctness.
-
-Example rule:
-
-```text
-If urgency is high, needsHumanReview must be true.
-```
-
-### Ticket evaluation
-
-A single ticket can be evaluated and marked as valid or invalid.
-
-The evaluation can return errors such as:
-
-```text
-schema-validation-failed
-business-rule-validation-failed
-```
-
-### Dataset evaluation
-
-A dataset of tickets can be evaluated as a group.
-
-The dataset evaluation returns:
-
-- Total number of tickets
-- Passed tickets
-- Failed tickets
-- Schema validation failures
-- Business rule failures
-- Individual evaluation results
-
-### Prediction evaluation
-
-The project supports AI-style prediction evaluation.
-
-A prediction contains:
-
-```ts
-{
-  ticket: Ticket;
-  expectedCategory: Ticket["category"];
-  predictedCategory: Ticket["category"];
-}
-```
-
-This allows the project to compare the expected ticket category with the predicted category.
+## Metrics included
 
 ### Accuracy
 
-Accuracy is calculated at dataset level.
-
-It answers the question:
-
-> How many predictions were correct out of all predictions?
-
-Formula:
-
-```text
-Accuracy = correct predictions / all predictions
-```
-
-Accuracy is useful, but it can be misleading when the dataset is imbalanced.
+Measures how many predictions were correct overall.
 
 ### Precision
 
-Precision is calculated per category.
+Answers the question:
 
-It answers the question:
-
-> When the model predicted this category, how often was it correct?
-
-Formula:
-
-```text
-Precision = true positives / predicted positives
-```
-
-Example:
-
-If the model predicted `billing` 4 times and only 2 of those predictions were actually `billing`, then precision for `billing` is:
-
-```text
-2 / 4 = 50%
-```
+> When the model predicted a given category, how often was it correct?
 
 ### Recall
 
-Recall is calculated per category.
+Answers the question:
 
-It answers the question:
-
-> Out of all tickets that actually belonged to this category, how many did the model find?
-
-Formula:
-
-```text
-Recall = true positives / actual positives
-```
-
-Example:
-
-If there were 4 actual `billing` tickets and the model correctly found 2 of them, then recall for `billing` is:
-
-```text
-2 / 4 = 50%
-```
+> Of all true cases for a given category, how many did the model correctly find?
 
 ### F1 Score
 
-F1 Score combines precision and recall into one balanced metric.
+Combines precision and recall into one balanced metric.
 
-Formula:
+### Macro average
 
-```text
-F1 = 2 * (precision * recall) / (precision + recall)
-```
+Calculates the average score across categories, treating each category equally.
 
-F1 Score is useful when both false positives and false negatives matter.
+This helps identify whether the model performs consistently across all categories, including smaller ones.
 
-## Confusion matrix
+### Weighted average
 
-The project also includes a confusion matrix for prediction evaluation.
+Calculates the average score across categories while weighting each category by the number of true cases in the dataset.
 
-The confusion matrix shows how expected categories were classified by the model.
+This helps understand overall performance based on real data volume.
+
+### Confusion matrix
+
+Shows how expected categories were mapped to predicted categories.
 
 Example:
 
 ```text
-billing -> billing: 2
 billing -> technical: 1
-billing -> account: 1
 ```
 
-## Human-readable report
+means that one ticket that should have been classified as `billing` was predicted as `technical`.
 
-The project includes a terminal report for prediction evaluation.
+## How to run the project
 
-Run:
+Install dependencies:
 
 ```bash
-npx tsx scripts/runPredictionEvaluation.ts
+npm install
 ```
 
-Example output:
+Run tests:
+
+```bash
+npm test
+```
+
+Run the prediction evaluation report:
+
+```bash
+npm run evaluate
+```
+
+Run the prediction quality gate:
+
+```bash
+npm run quality:gate
+```
+
+## Example evaluation report
 
 ```text
 AI Prediction Evaluation Report
@@ -225,6 +132,16 @@ Precision: 50.00%
 Recall: 33.33%
 F1 Score: 40.00%
 
+Macro average:
+Precision: 50.00%
+Recall: 50.00%
+F1 Score: 49.05%
+
+Weighted average:
+Precision: 50.00%
+Recall: 50.00%
+F1 Score: 49.14%
+
 Confusion matrix:
 billing -> billing: 2
 billing -> technical: 1
@@ -236,195 +153,70 @@ account -> billing: 1
 account -> technical: 1
 ```
 
-This report shows why accuracy alone is not enough.
+## Prediction quality gate
 
-Although the overall accuracy is 50%, the per-category metrics reveal different quality patterns:
+The project includes a configurable quality gate that evaluates whether prediction quality meets minimum thresholds.
 
-- `billing` has balanced but weak precision and recall, which means the model both overpredicts and misses billing tickets.
-- `technical` has higher recall than precision, which means the model finds more actual technical tickets, but still produces false positives.
-- `account` has the weakest recall, which means the model misses most actual account-related tickets.
+The quality gate checks:
 
-This kind of breakdown helps identify which categories need improvement instead of relying only on overall accuracy.
+- minimum accuracy
+- minimum macro F1 score
+- minimum weighted F1 score
 
-## Tech stack
-
-- TypeScript
-- Node.js
-- Zod
-- Vitest
-- tsx
-
-## Project structure
+Example output:
 
 ```text
-scripts/
-  runPredictionEvaluation.ts
-
-src/
-  ticketBusinessRules.ts
-  ticketDatasetEvaluation.ts
-  ticketEvaluation.ts
-  ticketEvaluationErrors.ts
-  ticketPrediction.ts
-  ticketPredictionDatasetEvaluation.ts
-  ticketPredictionEvaluation.ts
-  ticketPredictionF1Score.ts
-  ticketPredictionPrecision.ts
-  ticketPredictionRecall.ts
-  ticketSchema.ts
-
-test-data/
-  tickets.ts
-  ticketPredictions.ts
-
-tests/
-  ticketBusinessRules.test.ts
-  ticketDatasetEvaluation.test.ts
-  ticketEvaluation.test.ts
-  ticketPredictionDatasetEvaluation.test.ts
-  ticketPredictionEvaluation.test.ts
-  ticketPredictionF1Score.test.ts
-  ticketPredictionPrecision.test.ts
-  ticketPredictionRecall.test.ts
-  ticketSchema.test.ts
+AI Prediction Quality Gate
+Accuracy: 50.00%
+Macro F1 Score: 49.05%
+Weighted F1 Score: 49.14%
+Passed: true
 ```
 
-## Installation
+If any metric falls below the configured threshold, the quality gate fails and exits with an error code.
 
-```bash
-npm install
-```
+This makes it possible to block CI when prediction quality drops below acceptable levels.
 
-## Running tests
+## CI/CD
 
-```bash
-npm test
-```
+The project uses GitHub Actions to automatically run:
 
-The project uses Vitest for automated testing.
+- automated tests
+- prediction quality gate
 
-You can also run tests in watch mode:
+The CI workflow runs on push and pull request.
 
-```bash
-npm run test:watch
-```
+## Quality Engineering value
 
-## Running the prediction report
-
-```bash
-npx tsx scripts/runPredictionEvaluation.ts
-```
-
-## Example workflow
-
-The project follows this evaluation flow:
-
-```text
-Ticket dataset
-  ↓
-Schema validation
-  ↓
-Business rule validation
-  ↓
-Prediction comparison
-  ↓
-Dataset-level accuracy
-  ↓
-Per-category precision, recall, and F1 score
-  ↓
-Human-readable report
-```
-
-## Why this project matters
-
-In AI Quality Engineering, model output should not be trusted blindly.
-
-A model can appear to perform well when measured only with accuracy, especially if the dataset is imbalanced.
-
-For example:
-
-```text
-95 tickets are billing
-5 tickets are technical
-```
-
-If a model always predicts `billing`, it can still reach 95% accuracy while completely failing to identify technical tickets.
-
-That is why this project evaluates predictions using:
-
-- Accuracy
-- Precision
-- Recall
-- F1 score
-
-This gives a clearer view of model quality per category.
-
-## What this project demonstrates
-
-This project demonstrates practical understanding of:
+This project demonstrates:
 
 - AI output evaluation
-- Structured output validation
-- Classification metrics
-- Dataset-based evaluation
-- False positives and false negatives
-- Quality reporting
-- Edge case handling
-- TypeScript typing
-- Automated testing
-- Separation of validation, evaluation, metrics, and reporting logic
-
-## Current status
-
-Completed:
-
-- Ticket schema validation
-- Business rule validation
-- Ticket evaluation
-- Ticket dataset evaluation
-- Prediction evaluation
-- Accuracy
-- Precision
-- Recall
-- F1 score
-- Human-readable prediction report
-- Automated tests
-- `.gitignore` and repository cleanup
-- Expand the prediction dataset
-- Refactor report generation into a dedicated report module
-- Add tests for report formatting
-- Add a confusion matrix
+- classification quality metrics
+- automated quality reporting
+- quality gates
+- CI-based quality enforcement
+- QA-to-AI Quality Engineering transition skills
 
 ## Roadmap
 
-Planned next steps:
+Completed in v1:
 
-- Add macro and weighted averages
-- Add quality gates based on metric thresholds
-- Add GitHub Actions for CI
-- Explore Langfuse basics
-- Explore Phoenix basics
-- Connect the project to broader AI Quality and AI Governance concepts
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Macro average
+- Weighted average
+- Confusion matrix
+- Evaluation report
+- Quality gate
+- GitHub Actions CI
 
-## Career relevance
+Possible future improvements:
 
-This project is designed as a portfolio project for roles related to:
-
-- QA Lead
-- Quality Engineering Manager
-- AI Quality Engineer
-- AI Quality Lead
-- Quality Governance Lead
-
-It demonstrates practical skills relevant to AI Quality and Quality Engineering, including:
-
-- Designing evaluation logic for AI-style predictions
-- Validating structured outputs
-- Building dataset-level quality checks
-- Calculating classification metrics
-- Understanding false positives and false negatives
-- Creating human-readable quality reports
-- Writing automated tests for evaluation logic
-- Thinking beyond accuracy when assessing model output quality
-
-The project intentionally focuses on the quality and governance layer around AI systems, rather than model training. This reflects the type of work expected in AI Quality, Quality Strategy, and AI Governance roles.
+- Add JSON report output
+- Add HTML report output
+- Add larger and more realistic datasets
+- Add severity-based quality gates
+- Add executive summary reporting
+- Add model comparison support
