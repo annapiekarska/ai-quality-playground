@@ -20,5 +20,5 @@ if (!result.passed) {
     console.log(`- ${failure}`);
   }
 
-  process.exit(1);
+  throw new Error("Prediction quality gate failed");
 }
