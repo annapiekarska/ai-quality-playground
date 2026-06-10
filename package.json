@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "evaluate": "tsx scripts/runPredictionEvaluation.ts",
+    "quality:gate": "tsx scripts/runPredictionQualityGate.ts"
   },
   "keywords": [],
   "author": "",

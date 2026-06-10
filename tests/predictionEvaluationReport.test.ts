@@ -22,5 +22,13 @@ describe("generatePredictionEvaluationReport", () => {
     expect(report).toContain("billing -> billing: 2");
     expect(report).toContain("billing -> technical: 1");
     expect(report).toContain("account -> technical: 1");
+
+    expect(report).toContain("Macro average:");
+    expect(report).toContain("Precision: 50.00%");
+    expect(report).toContain("Recall: 50.00%");
+    expect(report).toContain("F1 Score: 49.05%");
+    expect(report).toContain(
+      "Weighted average:\nPrecision: 50.00%\nRecall: 50.00%\nF1 Score: 49.14%",
+    );
   });
 });

@@ -4,13 +4,16 @@ import { Precision } from "./ticketPredictionPrecision";
 import { Recall } from "./ticketPredictionRecall";
 import { F1Score } from "./ticketPredictionF1Score";
 import { buildConfusionMatrix } from "./ticketPredictionConfusionMatrix";
+import { evaluateMacroAverage } from "./ticketPredictionMacroAverage";
+import { evaluateWeightedAverage } from "./ticketPredictionWeightedAverage";
 
 export const generatePredictionEvaluationReport = (
   predictions: TicketPrediction[],
 ): string => {
   const evaluation = runTicketPredictionDatasetEvaluation(predictions);
   const confusionMatrix = buildConfusionMatrix(predictions);
-
+  const macroAverage = evaluateMacroAverage(predictions);
+  const weightedAverage = evaluateWeightedAverage(predictions);
   const categories = new Set<string>();
 
   for (const prediction of predictions) {
@@ -39,7 +42,16 @@ export const generatePredictionEvaluationReport = (
     lines.push(`F1 Score: ${(f1ScoreResult.f1Score * 100).toFixed(2)}%`);
     lines.push("");
   }
-
+  lines.push("Macro average:");
+  lines.push(`Precision: ${(macroAverage.precision * 100).toFixed(2)}%`);
+  lines.push(`Recall: ${(macroAverage.recall * 100).toFixed(2)}%`);
+  lines.push(`F1 Score: ${(macroAverage.f1Score * 100).toFixed(2)}%`);
+  lines.push("");
+  lines.push("Weighted average:");
+  lines.push(`Precision: ${(weightedAverage.precision * 100).toFixed(2)}%`);
+  lines.push(`Recall: ${(weightedAverage.recall * 100).toFixed(2)}%`);
+  lines.push(`F1 Score: ${(weightedAverage.f1Score * 100).toFixed(2)}%`);
+  lines.push("");
   lines.push("Confusion matrix:");
 
   for (const expectedCategory of Object.keys(confusionMatrix)) {
